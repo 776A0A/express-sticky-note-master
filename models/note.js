@@ -1,41 +1,59 @@
-const Sequelize = require('sequelize');
+
+var Sequelize = require('sequelize');
 var path = require('path');
 
-// Option 1: Passing parameters separately
-const sequelize = new Sequelize(undefined, undefined, undefined, {
-    host: 'localhost',
-    dialect: 'sqlite',
+var sequelize = new Sequelize(undefined,undefined, undefined, {
+  host: 'localhost',
+  dialect: 'sqlite',
 
-      // SQLite only
-    storage: path.join(__dirname, '../database/database.sqlite')
+  // SQLite only
+  storage: path.join(__dirname, '../database/database.sqlite') 
 });
 
-// sequelize
-//     .authenticate()
-//     .then(() => {
-//         console.log('Connection has been established successfully.');
-//     })
-//     .catch(err => {
-//         console.error('Unable to connect to the database:', err);
-//     });
+/*
+sequelize
+  .authenticate()
+  .then(function(err) {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(function (err) {
+    console.log('Unable to connect to the database:', err);
+  });
+  */
 
-// 创建一个表格
-const Note = sequelize.define('note', {
-    text: {
-        type: Sequelize.STRING
-    }
+
+var Note = sequelize.define('note', {
+  text: {
+    type: Sequelize.STRING
+  },
+  username: {
+    type: Sequelize.STRING
+  }
 });
 
-// 同步表格
-// Note: using `force: true` will drop the table if it already exists
 Note.sync()
-
-// Note.create({
-//     text: 'hello world!'
-// })
-
-// Note.findAll({raw: true}).then(notes => {
-//     console.log("All notes:", notes);
+//Note.drop();
+//Note.sync({force: true})
+// // force: true will drop the table if it already exists
+// Note.sync({force: true}).then(function () {
+//   // Table created
+//   return Note.create({
+//     text: 'hello world'
+//   });
 // });
 
-module.exports.Note = Note;
+// Note.create({
+//   text: 'haha'
+// })
+
+
+
+// Note.destroy({where:{text:'haha'}}, function(){
+//   console.log('destroy...')
+//   console.log(arguments)
+// })
+// Note.findAll({raw: true}).then(function(articles) {
+//   console.log(articles)
+// })
+
+module.exports = Note;
